@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/model/usuario';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-add-usuario',
@@ -10,13 +11,22 @@ export class AddUsuarioPage implements OnInit {
 
   protected usuario: Usuario = new Usuario
 
-  constructor() { }
+  constructor(
+    protected usuarioService: UsuarioService
+  ) { }
 
   ngOnInit() {
   }
 
   onsubmit(form) {
-    console.log("Cadastrado!");
+    this.usuarioService.save(this.usuario).then(
+      res=>{
+        console.log("Cadastrado!");
+      },
+      erro=>{
+        console.log("Erro: " + erro);
+      }
+    )
   }
 
 }
