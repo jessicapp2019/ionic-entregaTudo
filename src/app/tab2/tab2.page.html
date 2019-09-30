@@ -13,4 +13,15 @@
     </ion-fab-button>
   </ion-fab>
 
+  <ion-list *ngIf="usuarios | async as users">
+
+    <ion-item *ngFor="let u of users">
+      <ion-avatar slot="start">
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+      <ion-label>{{u.nome}}</ion-label>
+    </ion-item>
+
+  </ion-list>
+
 </ion-content>
