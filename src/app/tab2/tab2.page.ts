@@ -16,4 +16,14 @@ export class Tab2Page {
     this.usuarios = this.usuarioService.getAll();
   }
 
+  async doRefresh(event) {
+    console.log('Begin async operation');
+    this.usuarios = await this.usuarioService.getAll();
+    
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 500);
+
+  }
 }
