@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/model/usuario';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-usuario',
@@ -14,7 +15,8 @@ export class AddUsuarioPage implements OnInit {
 
   constructor(
     protected usuarioService: UsuarioService,
-    public alertController: AlertController
+    protected alertController: AlertController,
+    protected router:Router
   ) { }
 
   ngOnInit() {
@@ -24,6 +26,9 @@ export class AddUsuarioPage implements OnInit {
     this.usuarioService.save(this.usuario).then(
       res => {
         this.presentAlert("Aviso", "Cadastrado!");
+        form.reset();
+        this.usuario = new Usuario;
+        this.router.navigate(['/tabs/listUsuario']);
       },
       erro => {
         console.log("Erro: " + erro);

@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
-import { UsuarioService } from '../services/usuario.service';
+import { Component, OnInit } from '@angular/core';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss']
+  selector: 'app-list-usuario',
+  templateUrl: './list-usuario.page.html',
+  styleUrls: ['./list-usuario.page.scss'],
 })
-export class Tab2Page {
+export class ListUsuarioPage implements OnInit {
 
   protected usuarios: any;
+
+  ngOnInit() {
+  }
 
   constructor(
     protected usuarioService: UsuarioService
@@ -19,7 +22,7 @@ export class Tab2Page {
   async doRefresh(event) {
     console.log('Begin async operation');
     this.usuarios = await this.usuarioService.getAll();
-    
+
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();
