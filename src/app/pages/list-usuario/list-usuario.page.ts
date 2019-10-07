@@ -34,4 +34,8 @@ export class ListUsuarioPage implements OnInit {
     }, 500);
 
   }
+
+  remover(key){
+    this.usuarioService.remover(key);
+  }
 }
