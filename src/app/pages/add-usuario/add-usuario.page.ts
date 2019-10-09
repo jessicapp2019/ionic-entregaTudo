@@ -22,6 +22,10 @@ export class AddUsuarioPage implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  //função chamada toda vez que a pagina recebe foco;
+  ionViewWillEnter(){
     this.id = this.activedRoute.snapshot.paramMap.get("id");
     if (this.id) {
       this.usuarioService.get(this.id).subscribe(
