@@ -52,7 +52,7 @@ export class ListEntregaPage implements OnInit {
         }, {
           text: 'Sim',
           handler: () => {
-            this.usuarioService.remover(key);
+            this.entregaService.remover(key);
           }
         }
       ]
