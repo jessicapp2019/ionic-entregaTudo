@@ -63,6 +63,7 @@ export class LoginPage implements OnInit {
     if (!this.platform.is("cordova")){
       this.googlePlus.logout()
     }
+    this.router.navigate(['/']);
   }
 
 }
