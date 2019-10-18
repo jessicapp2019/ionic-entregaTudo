@@ -24,7 +24,7 @@
 
     <ion-item>
       <ion-label position="floating">Tel.</ion-label>
-      <ion-input type="text" [(ngModel)]="usuario.tel" name="tel" required></ion-input>
+      <ion-input type="tel" [(ngModel)]="usuario.tel" name="tel" required  [brmasker]="{phone: true}"></ion-input>
     </ion-item>
 
     <ion-item>
