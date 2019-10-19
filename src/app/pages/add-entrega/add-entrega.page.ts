@@ -3,6 +3,8 @@ import { Entrega } from 'src/app/model/entrega';
 import { EntregaService } from 'src/app/services/entrega.service';
 import { AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @Component({
   selector: 'app-add-entrega',
@@ -13,19 +15,23 @@ export class AddEntregaPage implements OnInit {
 
   protected entrega: Entrega = new Entrega;
   protected id: string = null;
+  protected preview: string = null;
 
   constructor(
     protected entregaService: EntregaService,
     protected alertController: AlertController,
     protected router: Router,
     protected activedRoute: ActivatedRoute,
+    private geolocation: Geolocation,
+    private camera: Camera
   ) { }
 
   ngOnInit() {
+    this.localAtual()
   }
 
   //função chamada toda vez que a pagina recebe foco;
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.id = this.activedRoute.snapshot.paramMap.get("id");
     if (this.id) {
       this.entregaService.get(this.id).subscribe(
@@ -38,35 +44,39 @@ export class AddEntregaPage implements OnInit {
   }
 
   onsubmit(form) {
-    if (this.id) {
-      this.entregaService.update(this.entrega, this.id).then(
-        res => {
-          this.presentAlert("Aviso", "Atualizado!");
-          form.reset();
-          this.entrega = new Entrega;
-          this.router.navigate(['/tabs/listEntrega']);
-        },
-        erro => {
-          console.log("Erro: " + erro);
-          this.presentAlert("Erro", "Erro ao atualizar!");
-        }
-      )
+    if (!this.preview) {
+      this.presentAlert("Ops!", "Tire sua foto!")
     } else {
-      this.entregaService.save(this.entrega).then(
-        res => {
-          this.presentAlert("Aviso", "Cadastrado!");
-          form.reset();
-          this.entrega = new Entrega;
-          this.router.navigate(['/tabs/listEntrega']);
-        },
-        erro => {
-          console.log("Erro: " + erro);
-          this.presentAlert("Erro", "Erro ao cadastrar!");
-        }
-      )
+      this.entrega.foto = this.preview;
+      if (this.id) {
+        this.entregaService.update(this.entrega, this.id).then(
+          res => {
+            this.presentAlert("Aviso", "Atualizado!");
+            form.reset();
+            this.entrega = new Entrega;
+            this.router.navigate(['/tabs/listEntrega']);
+          },
+          erro => {
+            console.log("Erro: " + erro);
+            this.presentAlert("Erro", "Erro ao atualizar!");
+          }
+        )
+      } else {
+        this.entregaService.save(this.entrega).then(
+          res => {
+            this.presentAlert("Aviso", "Cadastrado!");
+            form.reset();
+            this.entrega = new Entrega;
+            this.router.navigate(['/tabs/listEntrega']);
+          },
+          erro => {
+            console.log("Erro: " + erro);
+            this.presentAlert("Erro", "Erro ao cadastrar!");
+          }
+        )
+      }
     }
   }
-
   async presentAlert(titulo: string, texto: string) {
     const alert = await this.alertController.create({
       header: titulo,
@@ -78,4 +88,30 @@ export class AddEntregaPage implements OnInit {
     await alert.present();
   }
 
+  localAtual() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.entrega.lat = resp.coords.latitude
+      this.entrega.lng = resp.coords.longitude
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
+  }
+
+  tirarFoto() {
+    const options: CameraOptions = {
+      quality: 50,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      let base64Image = 'data:image/jpeg;base64,' + imageData;
+      this.preview = base64Image;
+    }, (err) => {
+      // Handle error
+    });
+  }
 }
