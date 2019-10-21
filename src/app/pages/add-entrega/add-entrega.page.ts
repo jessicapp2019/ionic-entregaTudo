@@ -15,7 +15,13 @@ export class AddEntregaPage implements OnInit {
 
   protected entrega: Entrega = new Entrega;
   protected id: string = null;
-  protected preview: string = null;
+  protected preview: string[] = null;
+
+  slideOpts = {
+    initialSlide: 1,
+    slidesPerView: 3,
+    speed: 400
+  };
 
   constructor(
     protected entregaService: EntregaService,
@@ -47,7 +53,7 @@ export class AddEntregaPage implements OnInit {
     if (!this.preview) {
       this.presentAlert("Ops!", "Tire sua foto!")
     } else {
-      this.entrega.foto = this.preview;
+      this.entrega.fotos = this.preview;
       if (this.id) {
         this.entregaService.update(this.entrega, this.id).then(
           res => {
@@ -109,7 +115,8 @@ export class AddEntregaPage implements OnInit {
       // imageData is either a base64 encoded string or a file URI
       // If it's base64 (DATA_URL):
       let base64Image = 'data:image/jpeg;base64,' + imageData;
-      this.preview = base64Image;
+      if (!this.preview) this.preview = [];
+      this.preview.push(base64Image);
     }, (err) => {
       // Handle error
     });

@@ -7,8 +7,14 @@
 <ion-content>
   <ion-item lines="none">
     <img src="assets/box.jpg" (click)="tirarFoto()" *ngIf="!preview">
-    <img [src]="preview" (click)="tirarFoto()" *ngIf="preview">
+    <img [src]="preview[preview.length-1]" (click)="tirarFoto()" *ngIf="preview">
   </ion-item>
+
+  <ion-slides pager="true" [options]="slideOpts">
+    <ion-slide *ngFor="let p of preview">
+      <img src="{{p}}">
+    </ion-slide>
+  </ion-slides>
 
   <form #fc="ngForm" (ngSubmit)="onsubmit(fc)">
     <ion-item>

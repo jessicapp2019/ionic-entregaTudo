@@ -11,5 +11,5 @@ export class Entrega {
     ativo: boolean = true;
     lat:number;
     lng:number;
-    foto:string;
+    fotos:string[]=[];
 }
