@@ -5,10 +5,11 @@
 </ion-header>
 
 <ion-content>
-
-  <ion-item lines="none">
-    <img [src]="entrega.foto" alt="">
-  </ion-item>
+  <ion-slides pager="true" [options]="slideOpts">
+    <ion-slide *ngFor="let p of entrega.fotos ">
+      <img src="{{p}}">
+    </ion-slide>
+  </ion-slides>
 
   <ion-list lines="none">
     <ion-item>

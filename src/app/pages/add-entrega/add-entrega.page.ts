@@ -122,7 +122,27 @@ export class AddEntregaPage implements OnInit {
     });
   }
 
-  removerFoto(index){
-    this.preview.splice(index,1)
+  async removerFoto(index) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar Remoção!',
+      message: 'Deseja remover a foto?',
+      buttons: [
+        {
+          text: 'Não',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            //console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Sim',
+          handler: () => {
+            //console.log('Confirm Okay');
+            this.preview.splice(index, 1)
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }
