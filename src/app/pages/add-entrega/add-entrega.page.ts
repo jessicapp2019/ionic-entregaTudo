@@ -121,4 +121,8 @@ export class AddEntregaPage implements OnInit {
       // Handle error
     });
   }
+
+  removerFoto(index){
+    this.preview.splice(index,1)
+  }
 }
