@@ -27,7 +27,6 @@ export class AddUsuarioPage implements OnInit {
   protected usuario: Usuario = new Usuario;
   protected id: string = null;
   protected preview: string = null;
-
   protected map: GoogleMap;
 
   constructor(
